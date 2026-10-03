@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block titre %}{{ t.page_services_titre }} — {{ entreprise.nom }}{% endblock %}
+
+{% block contenu %}
+<section class="page-header">
+    <div class="page-header-bg"><div class="blob-page-1"></div><div class="blob-page-2"></div></div>
+    <div class="container page-header-content">
+        <h1>{{ t.page_services_titre }}</h1>
+        <p>{{ t.page_services_sous_titre }}</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="services-detail-grid">
+            {% for service in services %}
+            <div class="service-detail-card fade-in">
+                <div class="service-detail-header">
+                    <div class="service-icone-large">{{ service.icone }}</div>
+                    <div class="service-duree">⏱ {{ service.duree }}</div>
+                </div>
+                <h2>{{ service.titre }}</h2>
+                <p class="service-description">{{ service.description }}</p>
+                <p class="service-details-text">{{ service.details }}</p>
+                <h4>{{ t.services_inclus }} :</h4>
+                <ul class="service-livrables">
+                    {% for livrable in service.livrables %}<li>✓ {{ livrable }}</li>{% endfor %}
+                </ul>
+                <div class="service-footer">
+                    <div class="service-prix">
+                        <span class="prix-label">{{ t.services_prix }}</span>
+                        <span class="prix-valeur">{{ service.prix }}</span>
+                    </div>
+                    <a href="/devis" class="btn-primary">{{ t.services_demander_devis }}</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section section-gradient">
+    <div class="container">
+        <h2 class="section-titre fade-in">{{ t.faq_titre }}</h2>
+        <div class="faq-list">
+            {% for item in faq %}
+            <details class="faq-item fade-in">
+                <summary>{{ item.question }}</summary>
+                <p>{{ item.reponse }}</p>
+            </details>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

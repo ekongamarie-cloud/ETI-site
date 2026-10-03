@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block titre %}{{ article.titre }} — {{ entreprise.nom }}{% endblock %}
+{% block description %}{{ article.extrait }}{% endblock %}
+
+{% block contenu %}
+
+<article class="article-page">
+
+    <!-- HEADER ARTICLE -->
+    <header class="article-header">
+        <div class="article-header-bg">
+            <div class="blob-page-1"></div>
+            <div class="blob-page-2"></div>
+        </div>
+        <div class="container container-narrow article-header-content">
+            <a href="/blog" class="article-retour">← {{ t.nav_blog }}</a>
+            {% if article.categorie %}
+            <span class="article-categorie">{{ article.categorie }}</span>
+            {% endif %}
+            <h1>{{ article.titre }}</h1>
+            <div class="article-meta">
+                <span>✍️ {{ article.auteur }}</span>
+                <span>📅 {{ article.date_publication[:10] }}</span>
+                <span>⏱ {{ article.temps_lecture }} min</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENU -->
+    <section class="article-body">
+        <div class="container container-narrow">
+            <p class="article-extrait">{{ article.extrait }}</p>
+            <div class="article-contenu">
+                {{ article.contenu|safe }}
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="article-end-cta">
+        <div class="container container-narrow">
+            <div class="article-end-box">
+                <h3>💬 {% if lang == 'en' %}Have a question?{% else %}Une question ?{% endif %}</h3>
+                <p>
+                    {% if lang == 'en' %}Let's talk about your project — free and without obligation.{% else %}Parlons de votre projet — gratuitement et sans engagement.{% endif %}
+                </p>
+                <div class="article-end-actions">
+                    <a href="/contact" class="btn-primary">{% if lang == 'en' %}Contact us{% else %}Nous contacter{% endif %}</a>
+                    <a href="/devis" class="btn-ghost-dark">{% if lang == 'en' %}Free quote{% else %}Devis gratuit{% endif %}</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</article>
+
+{% endblock %}

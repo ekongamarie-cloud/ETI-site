@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block titre %}{{ entreprise.nom }} — {{ t.hero_titre }}{% endblock %}
+
+{% block contenu %}
+<section class="hero hero-v2">
+    <div class="hero-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+    <div class="container hero-content">
+        <span class="hero-badge">{{ t.hero_badge }}</span>
+        <h1 class="hero-titre">{{ t.hero_titre }}</h1>
+        <p class="hero-sous-titre">{{ t.hero_sous_titre }}</p>
+        <div class="hero-actions">
+            <a href="/devis" class="btn-primary btn-large btn-animated">{{ t.hero_cta_principal }} →</a>
+            <a href="/services" class="btn-ghost btn-large">{{ t.hero_cta_secondaire }}</a>
+        </div>
+        <div class="hero-trust">
+            <span>{{ t.hero_trust_1 }}</span><span>•</span>
+            <span>{{ t.hero_trust_2 }}</span><span>•</span>
+            <span>{{ t.hero_trust_3 }}</span>
+        </div>
+    </div>
+    <div class="hero-wave">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+            <path d="M0,64 C240,100 480,20 720,60 C960,100 1200,40 1440,80 L1440,120 L0,120 Z" fill="#ffffff"/>
+        </svg>
+    </div>
+</section>
+
+<section class="chiffres-section">
+    <div class="container">
+        <div class="chiffres-grid">
+            {% for chiffre in chiffres %}
+            <div class="chiffre-card fade-in">
+                <div class="chiffre-valeur">{{ chiffre.valeur }}</div>
+                <div class="chiffre-label">{{ chiffre.label }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2 class="section-titre fade-in">{{ t.services_titre }}</h2>
+        <p class="section-sous-titre fade-in">{{ t.services_sous_titre }}</p>
+        <div class="services-grid">
+            {% for service in services %}
+            <div class="service-card fade-in">
+                <div class="service-icone-wrapper">
+                    <span class="service-icone">{{ service.icone }}</span>
+                </div>
+                <h3>{{ service.titre }}</h3>
+                <p>{{ service.description }}</p>
+                <a href="/services" class="lien-service">{{ t.services_voir_plus }} →</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section section-gradient">
+    <div class="container">
+        <h2 class="section-titre fade-in">{{ t.temoignages_titre }}</h2>
+        <p class="section-sous-titre fade-in">{{ t.temoignages_sous_titre }}</p>
+        <div class="temoignages-grid">
+            {% for tem in temoignages %}
+            <div class="temoignage-card fade-in">
+                <div class="temoignage-note">{{ '⭐' * tem.note }}</div>
+                <p class="temoignage-texte">"{{ tem.texte }}"</p>
+                <div class="temoignage-auteur">
+                    <div class="temoignage-avatar">{{ tem.nom[0] }}</div>
+                    <div>
+                        <strong>{{ tem.nom }}</strong>
+                        <span>{{ tem.activite }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="cta-final">
+    <div class="cta-bg">
+        <div class="blob-cta-1"></div>
+        <div class="blob-cta-2"></div>
+    </div>
+    <div class="container cta-content">
+        <h2>{{ t.cta_titre }}</h2>
+        <p>{{ t.cta_sous_titre }}</p>
+        <a href="/devis" class="btn-primary btn-large btn-animated">{{ t.hero_cta_principal }} →</a>
+    </div>
+</section>
+{% endblock %}

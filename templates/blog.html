@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block titre %}{{ t.page_blog_titre }} — {{ entreprise.nom }}{% endblock %}
+
+{% block contenu %}
+
+<section class="page-header">
+    <div class="page-header-bg">
+        <div class="blob-page-1"></div>
+        <div class="blob-page-2"></div>
+    </div>
+    <div class="container page-header-content">
+        <h1>{{ t.page_blog_titre }}</h1>
+        <p>{{ t.page_blog_sous_titre }}</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        {% if articles %}
+        <div class="blog-grid">
+            {% for article in articles %}
+            <article class="blog-card fade-in">
+
+                <div class="blog-card-image">
+                    {% if article.image %}
+                    <img src="{{ url_for('static', filename='images/' + article.image) }}" alt="{{ article.titre }}">
+                    {% else %}
+                    <div class="blog-card-placeholder">
+                        <span>📰</span>
+                    </div>
+                    {% endif %}
+                    {% if article.categorie %}
+                    <span class="blog-category">{{ article.categorie }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span>📅 {{ article.date_publication[:10] }}</span>
+                        <span>⏱ {{ article.temps_lecture }} min</span>
+                    </div>
+                    <h2><a href="/blog/{{ article.slug }}">{{ article.titre }}</a></h2>
+                    <p>{{ article.extrait }}</p>
+                    <a href="/blog/{{ article.slug }}" class="blog-read-more">
+                        {{ t.blog_lire_suite }} →
+                    </a>
+                </div>
+
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="vide">{{ t.blog_aucun }}</p>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

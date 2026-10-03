@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block titre %}{{ t.page_contact_titre }} — {{ entreprise.nom }}{% endblock %}
+
+{% block contenu %}
+<section class="page-header">
+    <div class="page-header-bg">
+        <div class="blob-page-1"></div>
+        <div class="blob-page-2"></div>
+    </div>
+    <div class="container page-header-content">
+        <h1>{{ t.page_contact_titre }}</h1>
+        <p>{{ t.page_contact_sous_titre }}</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container contact-grid">
+        <div class="contact-infos fade-in">
+            <h2>{{ t.contact_coordonnees }}</h2>
+            <p>📧 <a href="mailto:{{ entreprise.email }}">{{ entreprise.email }}</a></p>
+            <p>📱 <strong>{{ t.pays_cm }} :</strong> <a href="https://wa.me/{{ entreprise.whatsapp }}" target="_blank">{{ entreprise.telephone_cm }}</a></p>
+            <p>📱 <strong>{{ t.pays_cn }} :</strong> <a href="https://wa.me/{{ entreprise.whatsapp_cn }}" target="_blank">{{ entreprise.telephone_cn }}</a></p>
+            <p>📍 {{ t.footer_ville }}</p>
+            <div style="margin-top: 25px; display: flex; flex-direction: column; gap: 10px;">
+                <a href="https://wa.me/{{ entreprise.whatsapp }}" class="btn-primary" target="_blank">💬 {{ t.contact_whatsapp_cm }}</a>
+                <a href="https://wa.me/{{ entreprise.whatsapp_cn }}" class="btn-primary" target="_blank" style="background: #25D366;">💬 {{ t.contact_whatsapp_cn }}</a>
+            </div>
+        </div>
+        <div class="contact-form-wrapper fade-in">
+            <h2>{{ t.contact_envoyer_message }}</h2>
+            <form id="contactForm" class="form">
+                <div class="form-group">
+                    <label for="nom">{{ t.contact_nom }} *</label>
+                    <input type="text" id="nom" name="nom" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">{{ t.contact_email }} *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="telephone">{{ t.contact_telephone }}</label>
+                    <input type="tel" id="telephone" name="telephone">
+                </div>
+                <div class="form-group">
+                    <label for="message">{{ t.contact_message }} *</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary btn-large btn-animated">{{ t.contact_bouton }}</button>
+                <div id="formMessage" class="form-message"></div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const msg = document.getElementById('formMessage');
+    msg.textContent = "⏳ Envoi...";
+    msg.className = "form-message info";
+    try {
+        const r = await fetch('/contact', { method: 'POST', body: formData });
+        const data = await r.json();
+        msg.textContent = data.message;
+        msg.className = "form-message " + (data.success ? "success" : "error");
+        if (data.success) e.target.reset();
+    } catch (err) {
+        msg.textContent = "Erreur de connexion.";
+        msg.className = "form-message error";
+    }
+});
+</script>
+{% endblock %}

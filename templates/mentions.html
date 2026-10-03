@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block titre %}Mentions légales — {{ entreprise.nom }}{% endblock %}
+
+{% block contenu %}
+<section class="section">
+    <div class="container container-narrow">
+        <h1>Mentions légales</h1>
+        <h2>Éditeur du site</h2>
+        <p>{{ entreprise.nom }}<br>Fondée par {{ entreprise.fondatrice }}<br>{{ entreprise.ville }}<br>Email : {{ entreprise.email }}</p>
+        <h2>Données personnelles</h2>
+        <p>Les informations collectées via les formulaires sont utilisées uniquement pour répondre à vos demandes.</p>
+        <h2>Propriété intellectuelle</h2>
+        <p>Tous les contenus sont la propriété de {{ entreprise.nom }}.</p>
+    </div>
+</section>
+{% endblock %}

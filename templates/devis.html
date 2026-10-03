@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block titre %}{{ t.page_devis_titre }} — {{ entreprise.nom }}{% endblock %}
+
+{% block contenu %}
+<section class="page-header">
+    <div class="page-header-bg">
+        <div class="blob-page-1"></div>
+        <div class="blob-page-2"></div>
+    </div>
+    <div class="container page-header-content">
+        <h1>{{ t.page_devis_titre }}</h1>
+        <p>{{ t.page_devis_sous_titre }}</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container container-narrow">
+        <form id="devisForm" class="form fade-in">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="nom">{{ t.contact_nom }} *</label>
+                    <input type="text" id="nom" name="nom" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">{{ t.contact_email }} *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="telephone">{{ t.contact_telephone }} *</label>
+                    <input type="tel" id="telephone" name="telephone" required>
+                </div>
+                <div class="form-group">
+                    <label for="type_projet">{{ t.devis_type_projet }} *</label>
+                    <select id="type_projet" name="type_projet" required>
+                        <option value="">{{ t.choisir }}</option>
+                        <option value="site_web">{{ t.option_site_web }}</option>
+                        <option value="app_mobile">{{ t.option_app_mobile }}</option>
+                        <option value="ecran_attente">{{ t.option_ecran_attente }}</option>
+                        <option value="autre">{{ t.option_autre }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="budget">{{ t.devis_budget }}</label>
+                    <select id="budget" name="budget">
+                        <option value="">{{ t.choisir }}</option>
+                        <option value="moins_150k">{{ t.budget_moins_150k }}</option>
+                        <option value="150k_300k">{{ t.budget_150k_300k }}</option>
+                        <option value="300k_500k">{{ t.budget_300k_500k }}</option>
+                        <option value="plus_500k">{{ t.budget_plus_500k }}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="delai">{{ t.devis_delai }}</label>
+                    <select id="delai" name="delai">
+                        <option value="">{{ t.choisir }}</option>
+                        <option value="urgent">{{ t.delai_urgent }}</option>
+                        <option value="normal">{{ t.delai_normal }}</option>
+                        <option value="flexible">{{ t.delai_flexible }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description">{{ t.devis_description }} *</label>
+                <textarea id="description" name="description" rows="6" required></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary btn-large btn-animated">
+                {{ t.devis_bouton }}
+            </button>
+
+            <div id="formMessage" class="form-message"></div>
+        </form>
+    </div>
+</section>
+
+<script>
+document.getElementById('devisForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const msg = document.getElementById('formMessage');
+
+    msg.textContent = "⏳ Envoi...";
+    msg.className = "form-message info";
+
+    try {
+        const r = await fetch('/devis', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await r.json();
+        msg.textContent = data.message;
+        msg.className = "form-message " + (data.success ? "success" : "error");
+        if (data.success) e.target.reset();
+    } catch (err) {
+        msg.textContent = "Erreur de connexion. Réessayez.";
+        msg.className = "form-message error";
+    }
+});
+</script>
+{% endblock %}

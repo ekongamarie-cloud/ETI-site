@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titre %}{{ entreprise.nom }}{% endblock %}</title>
+    <meta name="description" content="ETI — Création de sites web, applications mobiles et écrans d'attente au Cameroun.">
+
+    <!-- Favicon (2 lignes, sans "alternate") -->
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/favicon.svg') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="header">
+    <div class="container header-content">
+               <a href="/" class="logo">
+            <img src="{{ url_for('static', filename='images/favicon.svg') }}"
+                 alt="ETI Logo"
+                 class="logo-img">
+            <span class="logo-nom">{{ entreprise.nom }}</span>
+        </a>
+        <nav class="nav">
+            <a href="/" class="{% if request.endpoint == 'accueil' %}active{% endif %}">{{ t.nav_accueil }}</a>
+            <a href="/services" class="{% if request.endpoint == 'services' %}active{% endif %}">{{ t.nav_services }}</a>
+            <a href="/portfolio" class="{% if request.endpoint == 'portfolio' %}active{% endif %}">{{ t.nav_portfolio }}</a>
+            <a href="/blog" class="{% if request.endpoint in ['blog', 'article'] %}active{% endif %}">{{ t.nav_blog }}</a>
+            <a href="/contact" class="{% if request.endpoint == 'contact' %}active{% endif %}">{{ t.nav_contact }}</a>
+            <div class="lang-switch">
+                <a href="{{ url_for('changer_langue', lang='fr') }}" class="{% if lang == 'fr' %}active{% endif %}">🇫🇷 FR</a>
+                <span>|</span>
+                <a href="{{ url_for('changer_langue', lang='en') }}" class="{% if lang == 'en' %}active{% endif %}">🇬🇧 EN</a>
+            </div>
+            <a href="/devis" class="btn-primary {% if request.endpoint == 'devis' %}active{% endif %}">{{ t.nav_devis }}</a>
+        </nav>
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    </div>
+</header>
+
+<main>{% block contenu %}{% endblock %}</main>
+
+<footer class="footer">
+    <div class="container footer-content">
+        <div class="footer-col">
+            <h4>{{ entreprise.nom }}</h4>
+            <p>{{ t.footer_slogan }}</p>
+            <p>📍 {{ t.footer_ville }}</p>
+        </div>
+        <div class="footer-col">
+            <h4>{{ t.footer_navigation }}</h4>
+            <a href="/services">{{ t.nav_services }}</a>
+            <a href="/portfolio">{{ t.nav_portfolio }}</a>
+            <a href="/blog">{{ t.nav_blog }}</a>
+            <a href="/contact">{{ t.nav_contact }}</a>
+        </div>
+        <div class="footer-col">
+            <h4>{{ t.footer_contact }}</h4>
+            <p>📧 {{ entreprise.email }}</p>
+            <p>📱 {{ t.pays_cm }} : {{ entreprise.telephone_cm }}</p>
+            <p>📱 {{ t.pays_cn }} : {{ entreprise.telephone_cn }}</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© {{ entreprise.annee }} {{ entreprise.nom }} — {{ t.footer_droits }}</p>
+    </div>
+</footer>
+
+<a href="https://wa.me/{{ entreprise.whatsapp }}" class="whatsapp-float" target="_blank" title="WhatsApp">💬</a>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

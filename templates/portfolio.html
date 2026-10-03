@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+{% block titre %}{{ t.page_portfolio_titre }} — {{ entreprise.nom }}{% endblock %}
+
+{% block contenu %}
+
+<!-- HEADER -->
+<section class="page-header">
+    <div class="page-header-bg">
+        <div class="blob-page-1"></div>
+        <div class="blob-page-2"></div>
+    </div>
+    <div class="container page-header-content">
+        <h1>{{ t.page_portfolio_titre }}</h1>
+        <p>{{ t.page_portfolio_sous_titre }}</p>
+    </div>
+</section>
+
+<!-- INTRO -->
+<section class="section" style="padding-bottom: 10px;">
+    <div class="container" style="max-width: 800px; text-align: center;">
+        <p style="font-size: 1.1rem; color: #555; line-height: 1.8;">
+            {{ t.portfolio_intro }}
+        </p>
+    </div>
+</section>
+
+<!-- SECTION PROJETS RÉALISÉS -->
+<section class="section" style="padding-top: 30px;">
+    <div class="container">
+        <h2 class="section-titre">{{ t.portfolio_section_reels_titre }}</h2>
+        <p class="section-sous-titre">{{ t.portfolio_section_reels_sous }}</p>
+
+        <div class="portfolio-grid-v3">
+            {% for projet in projets %}
+            {% if projet.type == 'reel' %}
+            <div class="portfolio-card-v3 fade-in">
+
+                <!-- IMAGE PRINCIPALE -->
+                <div class="portfolio-image-v3">
+                    {% if projet.image_principale %}
+                    <img src="{{ url_for('static', filename='images/' + projet.image_principale) }}"
+                         alt="{{ projet.titre }}"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="portfolio-image-fallback" style="background: {{ projet.couleur }}; display: none;">
+                        <span>{{ projet.icone }}</span>
+                    </div>
+                    {% else %}
+                    <div class="portfolio-image-fallback" style="background: {{ projet.couleur }};">
+                        <span>{{ projet.icone }}</span>
+                    </div>
+                    {% endif %}
+
+                    <div class="portfolio-type-badge reel">✅ {{ t[projet.type_label_key] }}</div>
+
+                    {% if projet.galerie and projet.galerie|length > 0 %}
+                    <button class="portfolio-gallery-btn" onclick="ouvrirGalerie('{{ projet.titre|replace("'", "\\'") }}', {{ projet.galerie|tojson|forceescape }})">
+                        📸 {{ t.portfolio_voir_galerie }} ({{ projet.galerie|length }})
+                    </button>
+                    {% endif %}
+                </div>
+
+                <!-- CONTENU -->
+                <div class="portfolio-body-v3">
+                    <span class="portfolio-cat-tag">{{ projet.categorie }}</span>
+                    <h3>{{ projet.titre }}</h3>
+                    <p class="portfolio-accroche">{{ projet.accroche }}</p>
+
+                    <div class="portfolio-block">
+                        <div class="portfolio-block-title">❓ {{ t.portfolio_probleme }}</div>
+                        <p>{{ projet.probleme }}</p>
+                    </div>
+
+                    <div class="portfolio-block">
+                        <div class="portfolio-block-title">💡 {{ t.portfolio_solution }}</div>
+                        <p>{{ projet.solution }}</p>
+                    </div>
+
+                    <div class="portfolio-block highlight">
+                        <div class="portfolio-block-title">🎯 {{ t.portfolio_pourquoi }}</div>
+                        <p>{{ projet.pourquoi }}</p>
+                    </div>
+
+                    <div class="portfolio-result-v3">
+                        <strong>{{ t.portfolio_resultat }} :</strong> {{ projet.resultat }}
+                    </div>
+
+                    <div class="portfolio-tech-row">
+                        <span class="portfolio-tech-label">{{ t.portfolio_technologies }} :</span>
+                        {% for tech in projet.technologies %}
+                        <span class="portfolio-tech-chip">{{ tech }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- SECTION DÉMOS -->
+<section class="section section-gradient">
+    <div class="container">
+        <h2 class="section-titre">{{ t.portfolio_section_demos_titre }}</h2>
+        <p class="section-sous-titre">{{ t.portfolio_section_demos_sous }}</p>
+
+        <div class="portfolio-grid-v3">
+            {% for projet in projets %}
+            {% if projet.type == 'demo' %}
+            <div class="portfolio-card-v3 fade-in">
+
+                <div class="portfolio-image-v3">
+                    <div class="portfolio-image-fallback" style="background: {{ projet.couleur }};">
+                        <span>{{ projet.icone }}</span>
+                    </div>
+                    <div class="portfolio-type-badge demo">💡 {{ t[projet.type_label_key] }}</div>
+                </div>
+
+                <div class="portfolio-body-v3">
+                    <span class="portfolio-cat-tag">{{ projet.categorie }}</span>
+                    <h3>{{ projet.titre }}</h3>
+                    <p class="portfolio-accroche">{{ projet.accroche }}</p>
+
+                    <div class="portfolio-block">
+                        <div class="portfolio-block-title">❓ {{ t.portfolio_probleme }}</div>
+                        <p>{{ projet.probleme }}</p>
+                    </div>
+
+                    <div class="portfolio-block">
+                        <div class="portfolio-block-title">💡 {{ t.portfolio_solution }}</div>
+                        <p>{{ projet.solution }}</p>
+                    </div>
+
+                    <div class="portfolio-block highlight">
+                        <div class="portfolio-block-title">🎯 {{ t.portfolio_pourquoi }}</div>
+                        <p>{{ projet.pourquoi }}</p>
+                    </div>
+
+                    <div class="portfolio-result-v3 demo">
+                        <strong>{{ t.portfolio_resultat }} :</strong> {{ projet.resultat }}
+                    </div>
+
+                    <div class="portfolio-tech-row">
+                        <span class="portfolio-tech-label">{{ t.portfolio_technologies }} :</span>
+                        {% for tech in projet.technologies %}
+                        <span class="portfolio-tech-chip">{{ tech }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-final">
+    <div class="cta-bg">
+        <div class="blob-cta-1"></div>
+        <div class="blob-cta-2"></div>
+    </div>
+    <div class="container cta-content">
+        <h2>{{ t.cta_titre }}</h2>
+        <p>{{ t.cta_sous_titre }}</p>
+        <a href="/devis" class="btn-primary btn-large btn-animated">{{ t.hero_cta_principal }} →</a>
+    </div>
+</section>
+
+<!-- MODALE GALERIE -->
+<div id="galerieModal" class="galerie-modal" onclick="if(event.target === this) fermerGalerie()">
+    <div class="galerie-content">
+        <button class="galerie-close" onclick="fermerGalerie()">✕</button>
+        <h3 id="galerieTitre" class="galerie-titre"></h3>
+        <div id="galerieGrid" class="galerie-grid"></div>
+    </div>
+</div>
+
+<script>
+function ouvrirGalerie(titre, images) {
+    document.getElementById('galerieTitre').textContent = titre;
+    const grid = document.getElementById('galerieGrid');
+    grid.innerHTML = '';
+
+    images.forEach(function(img) {
+        const item = document.createElement('div');
+        item.className = 'galerie-item';
+
+        const image = document.createElement('img');
+        image.src = '/static/images/' + img.fichier;
+        image.alt = img.legende_key;
+        image.onerror = function() {
+            this.parentElement.innerHTML = '<div class="galerie-placeholder">📷</div>';
+        };
+
+        const legende = document.createElement('p');
+        legende.textContent = img.legende;
+
+        item.appendChild(image);
+        item.appendChild(legende);
+        grid.appendChild(item);
+    });
+
+    document.getElementById('galerieModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function fermerGalerie() {
+    document.getElementById('galerieModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') fermerGalerie();
+});
+</script>
+
+{% endblock %}
